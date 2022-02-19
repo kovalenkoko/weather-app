@@ -1,34 +1,40 @@
 import useFetch from "hooks/useFetch";
 import { WEATHER } from "modules/api/endpoints";
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import api from "modules/api/api";
-import { apiActions } from "modules/api/actions";
+import React, { useState } from "react";
 
 export function CurrentWeather() {
-  const { response, performFetch } = useFetch(WEATHER, {});
+  const [input, setInput] = useState("");
+  const { response, performFetch } = useFetch(WEATHER, {
+    q: input,
+    units: "metric",
+  });
   const { loading, data } = response;
 
-  // useEffect(() => {
-  //   performFetch();
-  // }, [performFetch]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+  const createRequest = () => {
+    performFetch();
+    setInput("");
+  };
 
-  const dispatch = useDispatch();
-
-  useEffect(async () => {
-    const data = await api.fetch(WEATHER, {
-      lat: "23",
-      lon: "21",
-      units: "metric",
-    });
-    dispatch(apiActions.fetchSuccess(WEATHER, {}, data));
-  }, [dispatch]);
   return (
     <>
+      <form onSubmit={handleSubmit}>
+        <input
+          value={input}
+          onInput={(e) => setInput(e.target.value)}
+          type="text"
+          placeholder="Enter any city..."
+        ></input>
+        <button onClick={createRequest}>Search Weather</button>
+      </form>
       {loading ? (
         <div>Loading...</div>
-      ) : (
+      ) : data ? (
         <pre>{JSON.stringify(data, null, 2)}</pre>
+      ) : (
+        <div>No information, enter the city</div>
       )}
     </>
   );
