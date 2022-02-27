@@ -10,11 +10,11 @@ class Api {
     this.apiKey = apiKey;
   }
 
-  async generateRequest(endpoint, options, data) {
+  async generateRequest(endpoint, payload, data) {
     const { method, uri } = this.endpoints[endpoint];
 
-    const queryString = Object.keys(options)
-      .map((key) => key + "=" + options[key])
+    const queryString = Object.keys(payload)
+      .map((key) => key + "=" + payload[key])
       .join("&");
 
     return fetch(`${this.baseUrl}${uri}?${queryString}&appid=${this.apiKey}`, {
@@ -22,8 +22,8 @@ class Api {
       body: data,
     });
   }
-  async fetch(endpoint, options, data) {
-    const response = await this.generateRequest(endpoint, options, data);
+  async fetch(endpoint, payload, data) {
+    const response = await this.generateRequest(endpoint, payload, data);
     return response.json();
   }
 }
