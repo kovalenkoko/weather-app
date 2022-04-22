@@ -5,9 +5,11 @@ import { apiActions } from "modules/api/actions";
 import { useSelector } from "react-redux";
 import { selectApiState } from "modules/api/selectors";
 
+//some comment
+
 export function CurrentWeather() {
   const dispatch = useDispatch();
-  const [input, setInput] = useState("");
+  const [city, setCity] = useState("");
   const [usersData, setUsersData] = useState({});
   const apiState = useSelector(selectApiState);
   const { loading, data } = apiState[WEATHER];
@@ -18,11 +20,11 @@ export function CurrentWeather() {
   const createRequest = () => {
     dispatch(
       apiActions.fetch(WEATHER, {
-        q: input,
+        q: city,
         units: "metric",
       })
     );
-    setInput("");
+    setCity("");
   };
 
   useEffect(() => {
@@ -50,8 +52,8 @@ export function CurrentWeather() {
     <>
       <form onSubmit={handleSubmit}>
         <input
-          value={input}
-          onInput={(e) => setInput(e.target.value)}
+          value={city}
+          onInput={(e) => setCity(e.target.value)}
           type="text"
           placeholder="Enter any city..."
         ></input>
