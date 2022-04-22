@@ -5,8 +5,6 @@ import { apiActions } from "modules/api/actions";
 import { useSelector } from "react-redux";
 import { selectApiState } from "modules/api/selectors";
 
-//some comment
-
 export function CurrentWeather() {
   const dispatch = useDispatch();
   const [city, setCity] = useState("");
